@@ -1,15 +1,34 @@
 export async function fetchProducts() {
-  const res = await fetch("https://fakestoreapi.com/products", {
-    cache: "no-store", // SSR on every request
-  });
-  if (!res.ok) throw new Error("Failed to fetch products");
-  return res.json();
+  try {
+    const res = await fetch("https://fakestoreapi.com/products", {
+      next: { revalidate: 300 },
+      // optional but helps with some hosts/APIs:
+      headers: { "User-Agent": "Mozilla/5.0" },
+    });
+
+    if (!res.ok) {
+      console.error("fetchProducts failed:", res.status, res.statusText);
+      return [];
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("fetchProducts error:", err);
+    return [];
+  }
 }
 
 export async function fetchCategories() {
-  const res = await fetch("https://fakestoreapi.com/products/categories", {
-    cache: "force-cache", // categories rarely change
-  });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const res = await fetch("https://fakestoreapi.com/products/categories", {
+      cache: "force-cache",
+      headers: { "User-Agent": "Mozilla/5.0" },
+    });
+
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (err) {
+    console.error("fetchCategories error:", err);
+    return [];
+  }
 }

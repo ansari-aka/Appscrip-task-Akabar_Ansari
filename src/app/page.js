@@ -26,16 +26,21 @@ export default async function Page() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
-
         <section className="hero">
           <h1 className="hero__title">DISCOVER OUR PRODUCTS</h1>
           <p className="hero__desc">
             Browse curated products with a variety of Categories.
           </p>
         </section>
-
         {/* ✅ Client-side filter + sort */}
-        <ProductsClient products={products} categories={categories} />
+        {products.length === 0 ? (
+          <section className="empty">
+            <h2>Products temporarily unavailable</h2>
+            <p>Please refresh or try again in a few minutes.</p>
+          </section>
+        ) : (
+          <ProductsClient products={products} categories={categories} />
+        )}
       </main>
 
       <Footer />
