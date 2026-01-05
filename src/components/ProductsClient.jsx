@@ -63,10 +63,10 @@ function sortProducts(list, sortKey) {
 
 export default function ProductsClient({
   products: initialProducts = [],
-  categories = [],
+  categories: initialCategories = [],
 }) {
-  // ✅ local products state to support client-fetch fallback
   const [products, setProducts] = useState(initialProducts);
+  const [categories, setCategories] = useState(initialCategories);
   const [loading, setLoading] = useState(initialProducts.length === 0);
   const [loadError, setLoadError] = useState("");
 
@@ -99,10 +99,18 @@ export default function ProductsClient({
         const data = await res.json();
         if (!alive) return;
 
-        setProducts(Array.isArray(data) ? data : []);
+        const safe = Array.isArray(data) ? data : [];
+        setProducts(safe);
+
+        // ✅ derive categories from products
+        const cats = Array.from(
+          new Set(safe.map((p) => p?.category).filter(Boolean))
+        ).sort();
+        setCategories(cats);
       } catch (err) {
         if (!alive) return;
         setProducts([]);
+        setCategories([]);
         setLoadError("Products are temporarily unavailable.");
       } finally {
         if (!alive) return;
