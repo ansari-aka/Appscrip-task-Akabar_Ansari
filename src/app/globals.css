@@ -1,33 +1,19 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --max: 1120px;
+  --bd: #e7e7e7;
+  --txt: #111;
+  --muted: #6b7280;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
+}
+
+body {
   margin: 0;
+  font-family: Arial, sans-serif;
+  color: var(--txt);
+  background: #fff;
 }
 
 a {
@@ -35,8 +21,464 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ---------------- Header ---------------- */
+.header {
+  border-bottom: 1px solid var(--bd);
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header__row {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+}
+
+.nav {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+.header__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.iconBtn {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+/* ---------------- Page / Hero ---------------- */
+.page {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 16px 24px;
+}
+
+.hero {
+  padding: 22px 0 10px;
+  text-align: center;
+}
+
+.hero__title {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+.hero__desc {
+  margin: 8px auto 0;
+  max-width: 560px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ---------------- Layout ---------------- */
+.layout {
+  display: grid;
+  gap: 18px;
+  padding-top: 10px;
+}
+
+.layout--withFilter {
+  grid-template-columns: 260px 1fr;
+}
+
+.layout--noFilter {
+  grid-template-columns: 1fr;
+}
+
+.sidebar {
+  border-right: 1px solid var(--bd);
+  padding-right: 14px;
+}
+
+.sidebar--desktop {
+  display: block;
+}
+
+.sidebar--hidden {
+  display: none;
+}
+
+.content {
+  min-width: 0;
+}
+
+/* ---------------- Toolbar ---------------- */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid var(--bd);
+  border-bottom: 1px solid var(--bd);
+}
+
+.toolbar__count {
+  font-size: 12px;
+  letter-spacing: 0.7px;
+}
+
+.toolbar__btn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.7px;
+}
+
+/* Desktop toggle button (hide/show sidebar) */
+.toolbar__toggleBtn {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  text-decoration: underline;
+}
+
+/* Mobile filter open button */
+.toolbar__filterBtn {
+  display: none;
+  border: 1px solid var(--bd);
+  background: #fff;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.toolbar__sort select {
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 12px;
+  background: #fff;
+}
+
+/* ---------------- Filters ---------------- */
+.filters__top {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bd);
+}
+
+.check {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+}
+
+.filterBlock {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--bd);
+}
+
+.filterTitle {
+  margin: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+.filterList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  font-size: 12px;
+  background: #fff;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btnLink {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 12px;
+}
+
+/* ---------------- Products Grid ---------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 14px 0;
+}
+
+.card {
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.card__imgWrap {
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 220px;
+}
+
+.card__img {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  padding: 14px;
+}
+
+.card__body {
+  padding: 10px;
+}
+
+.card__title {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.35;
+  height: 34px;
+  overflow: hidden;
+}
+
+.card__meta {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.wish {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* ---------------- Footer ---------------- */
+.footer {
+  margin-top: 22px;
+  background: #0b0b0b;
+  color: #fff;
+  padding: 26px 16px;
+}
+
+.footer__grid {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.footer__title {
+  margin: 0 0 10px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+.footer__text {
+  margin: 0 0 6px;
+  color: #c9c9c9;
+  font-size: 12px;
+}
+
+.footer__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer__copy {
+  max-width: var(--max);
+  margin: 18px auto 0;
+  font-size: 12px;
+  color: #c9c9c9;
+}
+
+/* ---------------- Mobile/Tablet Drawer ---------------- */
+.filterDrawer {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 50;
+}
+
+.filterDrawer.isOpen {
+  display: block;
+}
+
+.filterDrawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.filterDrawer__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: min(92vw, 360px);
+  background: #fff;
+  border-right: 1px solid var(--bd);
+  padding: 12px;
+  overflow: auto;
+  transform: translateX(-100%);
+  animation: slideIn 180ms ease-out forwards;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.ratingStars {
+  color: #f59e0b; /* gold */
+  letter-spacing: 1px;
+  font-size: 12px;
+}
+
+.ratingText {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@keyframes slideIn {
+  to {
+    transform: translateX(0);
+  }
+}
+
+.filterDrawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bd);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.filterDrawer__title {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+.applyBtn {
+  width: 100%;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px;
+  background: #111;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+/* ---------------- Breakpoints ---------------- */
+@media (max-width: 900px) {
+  .nav {
+    display: none;
+  }
+
+  /* Mobile uses drawer */
+  .sidebar--desktop {
+    display: none;
+  }
+
+  .toolbar__toggleBtn {
+    display: none;
+  }
+
+  .toolbar__filterBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .toolbar__filterBtn {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
   }
 }
