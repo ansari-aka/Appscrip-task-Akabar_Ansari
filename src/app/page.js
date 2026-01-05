@@ -1,13 +1,15 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductsClient from "@/components/ProductsClient";
-import { fetchProducts, fetchCategories } from "@/lib/api";
+import {  fetchCategories } from "@/lib/api";
 
 export default async function Page() {
-  const [products, categories] = await Promise.all([
-    fetchProducts(),
-    fetchCategories(),
-  ]);
+  // const [products, categories] = await Promise.all([
+  //   fetchProducts(),
+  //   fetchCategories(),
+  // ]);
+  // const products = await fetchProducts();
+  const categories = await fetchCategories();
 
   const schema = {
     "@context": "https://schema.org",
@@ -33,14 +35,8 @@ export default async function Page() {
           </p>
         </section>
         {/* ✅ Client-side filter + sort */}
-        {products.length === 0 ? (
-          <section className="empty">
-            <h2>Products temporarily unavailable</h2>
-            <p>Please refresh or try again in a few minutes.</p>
-          </section>
-        ) : (
-          <ProductsClient products={products} categories={categories} />
-        )}
+
+        <ProductsClient products={[]} categories={categories} />
       </main>
 
       <Footer />

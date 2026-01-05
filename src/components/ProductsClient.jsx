@@ -61,7 +61,15 @@ function sortProducts(list, sortKey) {
   }
 }
 
-export default function ProductsClient({ products, categories }) {
+export default function ProductsClient({
+  products: initialProducts = [],
+  categories = [],
+}) {
+  // ✅ local products state to support client-fetch fallback
+  const [products, setProducts] = useState(initialProducts);
+  const [loading, setLoading] = useState(initialProducts.length === 0);
+  const [loadError, setLoadError] = useState("");
+
   const [filters, setFilters] = useState({
     search: "",
     category: "",
@@ -71,9 +79,42 @@ export default function ProductsClient({ products, categories }) {
   });
 
   const [sortKey, setSortKey] = useState("recommended");
-
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isDesktopFilterVisible, setIsDesktopFilterVisible] = useState(true);
+
+  // ✅ If SSR couldn't provide products (Netlify 403), fetch in browser
+  useEffect(() => {
+    let alive = true;
+
+    async function load() {
+      if (initialProducts.length > 0) return; // already have SSR data
+
+      try {
+        setLoading(true);
+        setLoadError("");
+
+        const res = await fetch("https://fakestoreapi.com/products");
+        if (!res.ok) throw new Error(`Products fetch failed (${res.status})`);
+
+        const data = await res.json();
+        if (!alive) return;
+
+        setProducts(Array.isArray(data) ? data : []);
+      } catch (err) {
+        if (!alive) return;
+        setProducts([]);
+        setLoadError("Products are temporarily unavailable.");
+      } finally {
+        if (!alive) return;
+        setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      alive = false;
+    };
+  }, [initialProducts.length]);
 
   const filtered = useMemo(
     () => filterProducts(products, filters),
@@ -99,6 +140,24 @@ export default function ProductsClient({ products, categories }) {
       document.body.style.overflow = "";
     };
   }, [isFilterOpen]);
+
+  // ✅ lightweight states (minimal DOM)
+  if (loading) {
+    return (
+      <section className="content loading" aria-label="Products">
+        <p>Loading products…</p>
+      </section>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <section className="content emptyState" aria-label="Products">
+        <h2>Products</h2>
+        <p>{loadError || "No products found."}</p>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -153,7 +212,6 @@ export default function ProductsClient({ products, categories }) {
         <div className="toolbar">
           <span className="toolbar__count">{finalList.length} ITEMS</span>
 
-          {/* ✅ DESKTOP FILTER TOGGLE */}
           <button
             className="toolbar__toggleBtn"
             type="button"
